@@ -1,7 +1,7 @@
 [[package]]
 name = "antlr4-python3-runtime"
-version = "4.9.2"
-description = "ANTLR 4.9.2 runtime for Python 3.7"
+version = "4.8"
+description = "ANTLR 4.8 runtime for Python 3.7"
 category = "main"
 optional = false
 python-versions = "*"
@@ -344,11 +344,11 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "995dbe9e91af9f01453dc0b71f4b22830da0b085822f7c025548682671d6113c"
+content-hash = "a941d10f914c8f9bff3f6fc27de0d9eeb2c13b6eaf0f7ad0b6d25a7e3e78e38c"
 
 [metadata.files]
 antlr4-python3-runtime = [
-    {file = "antlr4-python3-runtime-4.9.2.tar.gz", hash = "sha256:31f5abdc7faf16a1a6e9bf2eb31565d004359b821b09944436a34361929ae85a"},
+    {file = "antlr4-python3-runtime-4.8.tar.gz", hash = "sha256:15793f5d0512a372b4e7d2284058ad32ce7dd27126b105fb0b2245130445db33"},
 ]
 appnope = [
     {file = "appnope-0.1.2-py2.py3-none-any.whl", hash = "sha256:93aa393e9d6c54c5cd570ccadd8edad61ea0c4b9ea7a01409020c9aa019eb442"},

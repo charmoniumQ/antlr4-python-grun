@@ -1,1 +1,1 @@
-{"this is source": "of json", "a": 3, "b": null}
+{"this is source": "of json", "a": [3, 3], "b": null}
