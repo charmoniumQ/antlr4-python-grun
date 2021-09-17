@@ -7,10 +7,10 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         name = "antlr4-python-grun";
-        name-shell = "${name}-shel";
+        name-shell = "${name}-shell";
       in
         {
-          packages.${name} = pkgs.poetry2nix.mkPoetryScriptsPackage {
+          packages.${name} = pkgs.poetry2nix.mkPoetryApplication {
             projectDir = ./.;
           };
           packages.${name-shell} = pkgs.mkShell {
