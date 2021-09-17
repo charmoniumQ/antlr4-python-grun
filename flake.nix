@@ -7,23 +7,25 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         name = "antlr4-python-grun";
+        name-shell = "${name}-shel";
       in
         {
-        packages.${name} = pkgs.poetry2nix.mkPoetryApplication {
-          projectDir = ./.;
-        };
-        devShell = pkgs.mkShell {
-          buildInputs = [
-            (pkgs.poetry2nix.mkPoetryEnv {
-              projectDir = ./.;
-            })
-            pkgs.poetry
-            pkgs.antlr4
-            pkgs.jdk8
-          ];
-        };
-        defaultPackage = self.packages.${system}.${name};
-        defaultApp = self.packages.${system}.${name};
+          packages.${name} = pkgs.poetry2nix.mkPoetryScriptsPackage {
+            projectDir = ./.;
+          };
+          packages.${name-shell} = pkgs.mkShell {
+            buildInputs = [
+              (pkgs.poetry2nix.mkPoetryEnv {
+                projectDir = ./.;
+              })
+              pkgs.poetry
+              pkgs.antlr4
+              pkgs.jdk8
+            ];
+          };
+          devShell = self.packages.${system}.${name-shell};
+          defaultPackage = self.packages.${system}.${name};
+          defaultApp = self.packages.${system}.${name};
         }
     );
 }
