@@ -1,10 +1,11 @@
 [tool.poetry]
-name = "antlr4-python-grun"
+name = "antlr4-grun"
 version = "0.1.0"
-description = "Pure-Python replacement of `org.antlr.v4.gui.TestRig` (aka `grun`)."
+description = "Pure-Python replacement of `org.antlr.v4.gui.TestRig` (aka `grun`)"
 authors = ["Samuel Grayson <sam@samgrayson.me>"]
 license = "MIT"
 readme = 'README.rst'
+repository = "https://github.com/charmoniumQ/antlr4-python-grun"
 
 [tool.poetry.scripts]
 grun = 'antlr4_grun.main:main'
