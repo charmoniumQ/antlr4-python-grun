@@ -186,7 +186,8 @@ def compile(
     if antlr_path is None:
         antlr_path = Path("/tmp/antlr-4.9.2-complete.jar")
         if not antlr_path.exists():
-            antlr_url = "https://www.antlr.org/download/antlr-4.9.2-complete.jar"
+            # TODO: get version with our Python runtime package
+            antlr_url = "https://www.antlr.org/download/antlr-4.8-complete.jar"
             antlr_webreq = urllib.request.urlopen(antlr_url)
             with antlr_path.open("wb") as antlr_dest:
                 shutil.copyfileobj(antlr_webreq, antlr_dest)
