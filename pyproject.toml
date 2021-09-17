@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "antlr4-grun"
-version = "0.2.0"
+version = "0.3.0"
 description = "Pure-Python replacement of `org.antlr.v4.gui.TestRig` (aka `grun`)"
 authors = ["Samuel Grayson <sam@samgrayson.me>"]
 license = "MIT"

@@ -18,6 +18,7 @@
               projectDir = ./.;
             })
             pkgs.poetry
+            pkgs.antlr4
             pkgs.jdk8
           ];
         };

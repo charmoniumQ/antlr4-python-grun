@@ -14,7 +14,7 @@ import antlr4  # type: ignore
 from . import util
 
 
-def get_lexer_parser(location: Path, grammar: str) -> Tuple[Any, Any]:
+def get_lexer_parser(location: Path, grammar: str) -> Tuple[antlr4.Lexer, antlr4.Parser]:
     with util.sys_path_prepend([location]):
         return (
             getattr(
@@ -176,26 +176,28 @@ def compile(
         exists=True,
         dir_okay=True,
     ),
-    antlr_path: Optional[Path] = typer.Option(
+    antlr_jar_path: Optional[Path] = typer.Option(
         None,
         exists=True,
         file_okay=True,
         help="Path to antlr JAR. If not set, I will download and store a fresh copy.",
     ),
 ) -> None:
-    if antlr_path is None:
-        antlr_path = Path("/tmp/antlr-4.9.2-complete.jar")
-        if not antlr_path.exists():
-            # TODO: get version with our Python runtime package
-            antlr_url = "https://www.antlr.org/download/antlr-4.8-complete.jar"
-            antlr_webreq = urllib.request.urlopen(antlr_url)
-            with antlr_path.open("wb") as antlr_dest:
-                shutil.copyfileobj(antlr_webreq, antlr_dest)
+    if subprocess.run(["which", "antlr4"], capture_output=True).returncode == 0:
+        antlr_command = ["antlr4"]
+    else:
+        if antlr_jar_path is None:
+            antlr_jar_path = Path("/tmp/antlr-4.8-complete.jar")
+            if not antlr_jar_path.exists():
+                # TODO: get version with our Python runtime package
+                antlr_url = "https://www.antlr.org/download/antlr-4.8-complete.jar"
+                antlr_webreq = urllib.request.urlopen(antlr_url)
+                with antlr_jar_path.open("wb") as antlr_dest:
+                    shutil.copyfileobj(antlr_webreq, antlr_dest)
+        antlr_command = ["java", "-jar", str(antlr_path)]
     subprocess.run(
         [
-            "java",
-            "-jar",
-            str(antlr_path),
+            *antlr_command,
             "-o",
             str(output_dir),
             "-Dlanguage=Python3",

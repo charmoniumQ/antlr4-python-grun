@@ -10,9 +10,10 @@ import json
 from antlr4_grun.main import app
 
 
-@pytest.fixture()
-def compiled_json_grammer_path(tmp_path: Path) -> Iterator[Path]:
+@pytest.fixture(scope="session")
+def compiled_json_grammer_path(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Path]:
     runner = CliRunner()
+    tmp_path = tmp_path_factory.mktemp("build")
     result = runner.invoke(
         app,
         [
