@@ -34,7 +34,9 @@ def test_tokenize(format: str) -> None:
     assert result.exit_code == 0, result.output
 
 
-@pytest.mark.parametrize("pretty,format", itertools.product([True, False], ["json", "s-expr"]))
+@pytest.mark.parametrize(
+    "pretty,format", itertools.product([True, False], ["json", "s-expr"])
+)
 def test_parse(pretty: bool, format: str) -> None:
     runner = CliRunner()
     result = runner.invoke(

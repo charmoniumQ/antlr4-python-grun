@@ -56,14 +56,19 @@ class FormatType(str, enum.Enum):
         if self == FormatType.s_expr:
             return f")"
         elif self == FormatType.json:
-            return f']}}'
+            return f"]}}"
         else:
             raise NotImplementedError()
 
+
 def get_cache_path() -> Path:
-    path = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "antlr4-python-grun"
+    path = (
+        Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
+        / "antlr4-python-grun"
+    )
     path.mkdir(parents=True, exist_ok=True)
     return path
+
 
 def get_antlr_jar() -> Path:
     antlr_jar_path = get_cache_path() / "antlr-4.8-complete.jar"
@@ -72,13 +77,16 @@ def get_antlr_jar() -> Path:
         util.download(antlr_url, antlr_jar_path)
     return antlr_jar_path
 
+
 def compile(grammar_path: Path) -> Path:
     name = grammar_path.stem
     build_dir = get_cache_path() / name
     antlr_jar = get_antlr_jar()
     representative_file = build_dir / f"{name}Lexer.py"
-    if not representative_file.exists() or \
-       representative_file.stat().st_mtime < grammar_path.stat().st_mtime:
+    if (
+        not representative_file.exists()
+        or representative_file.stat().st_mtime < grammar_path.stat().st_mtime
+    ):
         if build_dir.exists():
             shutil.rmtree(build_dir)
         build_dir.mkdir()
@@ -98,6 +106,7 @@ def compile(grammar_path: Path) -> Path:
         )
     return build_dir
 
+
 def get_lexer_parser(grammar_path: Path) -> Tuple[antlr4.Lexer, antlr4.Parser]:
     build_dir = compile(grammar_path)
     name = grammar_path.stem
@@ -115,8 +124,8 @@ def get_lexer_parser(grammar_path: Path) -> Tuple[antlr4.Lexer, antlr4.Parser]:
 
 
 def tokenize(
-        grammar: Path,
-        input: Path,
+    grammar: Path,
+    input: Path,
 ) -> Iterable[str]:
     Lexer, _ = get_lexer_parser(grammar)
     input_stream = antlr4.FileStream(input)
@@ -129,9 +138,9 @@ def tokenize(
 
 
 def parse(
-        grammar: Path,
-        initial_rule: str,
-        input: Path,
+    grammar: Path,
+    initial_rule: str,
+    input: Path,
 ) -> antlr4.ParserRuleContext:
     Lexer, Parser = get_lexer_parser(grammar)
     input_stream = antlr4.FileStream(input)
@@ -140,10 +149,11 @@ def parse(
     parser = Parser(stream)
     return getattr(parser, initial_rule)()
 
+
 def format_tree(
-        root: antlr4.ParserRuleContext,
-        pretty: bool,
-        format: FormatType,
+    root: antlr4.ParserRuleContext,
+    pretty: bool,
+    format: FormatType,
 ) -> str:
     stack = [(root, True)]
     depth = 0
