@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "antlr4-grun"
-version = "0.3.0"
+version = "0.4.0"
 description = "Pure-Python replacement of `org.antlr.v4.gui.TestRig` (aka `grun`)"
 authors = ["Samuel Grayson <sam@samgrayson.me>"]
 license = "MIT"
@@ -8,7 +8,7 @@ readme = 'README.rst'
 repository = "https://github.com/charmoniumQ/antlr4-python-grun"
 
 [tool.poetry.scripts]
-pygrun = 'antlr4_grun.main:main'
+pygrun = 'antlr4_grun.cli:main'
 
 [tool.poetry.dependencies]
 python = "^3.7"

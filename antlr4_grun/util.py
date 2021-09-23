@@ -2,6 +2,8 @@ import sys
 from pathlib import Path
 import contextlib
 import collections
+import shutil
+import urllib.request
 from typing import TypeVar, List, Iterator, Tuple, Iterable
 
 Value = TypeVar("Value")
@@ -27,6 +29,13 @@ def first_sentinel(iterable: Iterable[Value]) -> Iterator[Tuple[Value, bool]]:
     yield (next(iterator), True)
     for elem in iterator:
         yield (elem, False)
+
+
+def download(url: str, dest_path: Path) -> None:
+    webreq = urllib.request.urlopen(url)
+    with dest_path.open("wb") as dest:
+        shutil.copyfileobj(webreq, dest)
+
 
 @contextlib.contextmanager
 def sys_path_prepend(paths: List[Path]) -> Iterator[None]:

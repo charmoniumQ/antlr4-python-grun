@@ -1,68 +1,55 @@
+import traceback
 import re
 from pathlib import Path
 import subprocess
 import itertools
 import tempfile
+import os
 from typing import Iterator
 import pytest
 from typer.testing import CliRunner
 import json
-from antlr4_grun.main import app
+from antlr4_grun.cli import app
 
 
-@pytest.fixture(scope="session")
-def compiled_json_grammer_path(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Path]:
-    runner = CliRunner()
-    tmp_path = tmp_path_factory.mktemp("build")
-    result = runner.invoke(
-        app,
-        [
-            "compile",
-            "tests/sample/JSON.g4",
-            "--output-dir",
-            str(tmp_path),
-        ],
-    )
-    assert result.exit_code == 0, result.output
-    yield tmp_path
+project_dir = Path(__file__).parent.parent.relative_to(os.getcwd())
+json_grammar_path = project_dir / "tests" / "sample" / "JSON.g4"
+json_source_path = project_dir / "tests" / "sample" / "source.json"
 
 
 @pytest.mark.parametrize("format", ["json", "s-expr"])
-def test_tokenize(compiled_json_grammer_path: Path, format: str) -> None:
+def test_tokenize(format: str) -> None:
     runner = CliRunner()
     result = runner.invoke(
         app,
         [
             "tokenize",
-            "JSON",
-            "--location",
-            str(compiled_json_grammer_path),
+            str(json_grammar_path),
             "--format",
             format,
-            "tests/sample/source.json",
+            str(json_source_path),
         ],
     )
+    assert not result.exception, traceback.print_exception(*result.exc_info)
     assert result.exit_code == 0, result.output
-    print(str(result.output))
 
 
 @pytest.mark.parametrize("pretty,format", itertools.product([True, False], ["json", "s-expr"]))
-def test_parse(compiled_json_grammer_path: Path, pretty: bool, format: str) -> None:
+def test_parse(pretty: bool, format: str) -> None:
     runner = CliRunner()
     result = runner.invoke(
         app,
         [
             "parse",
-            "JSON",
+            str(json_grammar_path),
             "json",
-            "--location",
-            str(compiled_json_grammer_path),
             "--format",
             format,
-            "tests/sample/source.json",
+            str(json_source_path),
             *(["--ugly"] if not pretty else []),
         ],
     )
+    assert not result.exception, traceback.print_exception(*result.exc_info)
     assert result.exit_code == 0, result.output
     if format == "json":
         first_brace = result.output.index("{")
