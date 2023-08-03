@@ -11,3 +11,36 @@ or more Pythonic design. For example,
 
 -  I use JSON strings to escape source lexemes. This is more elegant and
    is easily parsed in whatever next phase of processing exists.
+
+# Usage
+
+```
+$ pip install https://github.com/charmoniumQ/antlr4-python-grun/archive/main.tar.gz
+
+$ pygrun parse --help
+Usage: pygrun parse [OPTIONS] GRAMMAR INITIAL_RULE [INPUT]
+
+  Print parse of input as tree.
+
+Arguments:
+  GRAMMAR       [required]
+  INITIAL_RULE  Initial rule to start parsing from  [required]
+  [INPUT]       [default: /dev/stdin]
+
+Options:
+   / --ugly               [default: True]
+  --format [s-expr|json]  [default: FormatType.s_expr]
+  --help                  Show this message and exit.
+
+$ pygrun tokenize --helpUsage: pygrun tokenize [OPTIONS] GRAMMAR [INPUT]
+
+  Tokenize the input.
+
+Arguments:
+  GRAMMAR  [required]
+  [INPUT]  [default: /dev/stdin]
+
+Options:
+  --format [s-expr|json]  [default: FormatType.s_expr]
+  --help                  Show this message and exit.
+```
